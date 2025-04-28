@@ -1,0 +1,24 @@
+// Arquivo: calculator.proto
+syntax = "proto3";
+
+service Calculator {
+  rpc Add (TwoNumbers) returns (Result);
+  rpc Subtract (TwoNumbers) returns (Result);
+  rpc Multiply (TwoNumbers) returns (Result);
+  rpc Divide (TwoNumbers) returns (Result);
+  rpc Sqrt (OneNumber) returns (Result);
+  rpc Power (TwoNumbers) returns (Result);
+}
+
+message TwoNumbers {
+  double a = 1;
+  double b = 2;
+}
+
+message OneNumber {
+  double a = 1;
+}
+
+message Result {
+  double value = 1;
+}
