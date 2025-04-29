@@ -1,48 +1,37 @@
-import grpc
-from concurrent import futures
-import sys
-import os
+import Pyro5.api
+import Pyro5.server
 
-# Permite importar o proto
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'proto')))
-import proto.calculator_pb2 as calculator_pb2
-import proto.calculator_pb2_grpc as calculator_pb2_grpc
-import math
+@Pyro5.api.expose
+class Calculadora:
+    def somar(self, a, b):
+        return a + b
 
-class CalculatorServicer(calculator_pb2_grpc.CalculatorServicer):
-    def Add(self, request, context):
-        return calculator_pb2.Result(value=request.a + request.b)
+    def subtrair(self, a, b):
+        return a - b
 
-    def Subtract(self, request, context):
-        return calculator_pb2.Result(value=request.a - request.b)
+    def multiplicar(self, a, b):
+        return a * b
 
-    def Multiply(self, request, context):
-        return calculator_pb2.Result(value=request.a * request.b)
+    def dividir(self, a, b):
+        if b == 0:
+            raise ValueError("Divisão por zero não permitida.")
+        return a / b
 
-    def Divide(self, request, context):
-        if request.b == 0:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('Divisão por zero!')
-            return calculator_pb2.Result()
-        return calculator_pb2.Result(value=request.a / request.b)
+    def raiz_quadrada(self, a):
+        if a < 0:
+            raise ValueError("Raiz quadrada de número negativo não permitida.")
+        return a ** 0.5
 
-    def Sqrt(self, request, context):
-        if request.a < 0:
-            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
-            context.set_details('Raiz quadrada de número negativo!')
-            return calculator_pb2.Result()
-        return calculator_pb2.Result(value=math.sqrt(request.a))
+    def exponenciar(self, base, expoente):
+        return base ** expoente
 
-    def Power(self, request, context):
-        return calculator_pb2.Result(value=math.pow(request.a, request.b))
-
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    calculator_pb2_grpc.add_CalculatorServicer_to_server(CalculatorServicer(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    print("Servidor gRPC rodando na porta 50051...")
-    server.wait_for_termination()
+def main():
+    daemon = Pyro5.server.Daemon()         # make a Pyro daemon
+    ns = Pyro5.api.locate_ns()             # find the name server
+    uri = daemon.register(Calculadora)   # register the greeting maker as a Pyro object
+    ns.register("dist.calculadora", uri)
+    print("Servidor pronto.")
+    daemon.requestLoop()   
 
 if __name__ == "__main__":
-    serve()
+    main()

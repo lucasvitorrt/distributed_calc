@@ -1,105 +1,72 @@
+# 🧮 Calculadora Distribuída com Pyro5
 
-# 📚 Calculadora Distribuída gRPC
+Este projeto implementa uma **calculadora distribuída** utilizando o framework [Pyro5](https://pyro5.readthedocs.io/), permitindo a realização de operações matemáticas remotamente entre cliente e servidor.
 
-Este projeto implementa uma **calculadora distribuída** usando **gRPC** em **Python**, com operações básicas expostas remotamente para serem usadas por um cliente.
+## 📦 Funcionalidades
 
-## 📂 Estrutura do Projeto
-
-```
-calculadora-grpc/
-├── client/
-│   └── client.py
-├── server/
-│   └── server.py
-├── proto/
-│   ├── calculator.proto
-│   ├── calculator_pb2.py
-│   └── calculator_pb2_grpc.py
-├── Makefile
-└── README.md
-```
-
-## ⚙️ Tecnologias Usadas
-
-- Python 3.10+
-- gRPC
-- Protobuf
-- Makefile
-
-## 🔧 Pré-requisitos
-
-Antes de rodar o projeto, instale as dependências necessárias:
-
-```bash
-pip install grpcio grpcio-tools
-```
-
-## 🚀 Instruções de Uso
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/lucasvitorrt/distributed_calc.git
-cd calculadora-grpc
-```
-
-### 1. Gerar os arquivos a partir do `.proto`
-
-**(Execute uma vez para gerar `calculator_pb2.py` e `calculator_pb2_grpc.py`)**
-
-```bash
-make proto
-```
-
-### 2. Iniciar o Servidor
-
-```bash
-make server
-```
-O servidor gRPC será iniciado e ficará escutando na porta `50051`.
-
-### 3. Iniciar o Cliente
-
-Em outro terminal (também dentro da pasta do projeto):
-
-```bash
-make client
-```
-O cliente entrará em um loop interativo para que você escolha e execute as operações:
+A calculadora oferece as seguintes operações:
 
 - Soma
 - Subtração
 - Multiplicação
-- Divisão
-- Raiz Quadrada
+- Divisão (com tratamento para divisão por zero)
+- Raiz quadrada (com validação para números negativos)
 - Exponenciação
 
-Digite `0` para sair.
+## 📁 Estrutura do Projeto
 
-## 🎯 Funcionalidades Implementadas
+- `server.py`: Servidor que expõe os métodos da calculadora via Pyro5.
+- `client.py`: Cliente que acessa os métodos remotos da calculadora.
+- `pyro5-ns`: Servidor de nomes do Pyro5 (não incluído no repositório; instalado com o Pyro5).
 
-- Operações matemáticas básicas e avançadas
-- Comunicação Cliente-Servidor via gRPC
-- Estrutura de projeto organizada
-- Automação com Makefile
+## 🚀 Como Executar
 
-## 🛠️ Comandos Úteis
+### 1. Pré-requisitos
 
-| Comando        | Descrição                                |
-|:---------------|:-----------------------------------------|
-| `make proto`   | Gera o código gRPC a partir do `.proto`   |
-| `make server`  | Inicia o servidor gRPC                   |
-| `make client`  | Inicia o cliente gRPC                    |
+Certifique-se de ter o Python instalado, juntamente com o Pyro5:
 
-## 📢 Observações
+```cmd
+pip install Pyro5
+```
 
-- Certifique-se de que o servidor esteja rodando **antes** de iniciar o cliente.
-- Em caso de erro, verifique se a versão do Python é compatível (3.10 ou superior recomendado).
-- O projeto usa comunicação sem autenticação (ideal para ambientes de testes).
+### 2. Inicie o servidor de nomes Pyro5
 
-## 🧑‍💻 Autor
+Antes de rodar o servidor e o cliente, **é necessário inicializar o servidor de nomes** do Pyro5. No terminal:
 
-- Nome: **Lucas Vitor**
-- GitHub: [@lucasvitorrt](https://github.com/lucasvitorrt)
+```cmd
+pyro5-ns
+```
 
----
+> ⚠️ Este comando deve ser executado em um terminal separado e **mantido em execução**.
+
+### 3. Execute o servidor
+
+Em outro terminal, execute o servidor:
+
+```cmd
+python server.py
+```
+
+Você verá a mensagem:
+```
+Servidor pronto.
+```
+
+### 4. Execute o cliente
+
+Por fim, em um terceiro terminal, execute o cliente:
+
+```cmd
+python client.py
+```
+
+A interface em linha de comando será apresentada para que você escolha a operação desejada.
+
+## 🛠️ Tecnologias Utilizadas
+
+- Python 3
+- Pyro5 (Python Remote Objects)
+
+## 🧑‍💻 Autores
+
+- Lucas Vitor
