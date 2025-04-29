@@ -26,12 +26,12 @@ class Calculadora:
         return base ** expoente
 
 def main():
-    daemon = Pyro5.server.Daemon()         # make a Pyro daemon
-    ns = Pyro5.api.locate_ns()             # find the name server
-    uri = daemon.register(Calculadora)   # register the greeting maker as a Pyro object
-    ns.register("dist.calculadora", uri)
+    daemon = Pyro5.server.Daemon()       # Cria uma instância de daemon Pyro, que é responsável por escutar requisições remotas vindas de clientes e direcioná-las para os objetos Python corretos. Ele atua como um "servidor RPC" (Remote Procedure Call).
+    ns = Pyro5.api.locate_ns()           # Conecta-se ao servidor de nomes do Pyro5 (pyro5-ns), que deve estar previamente em execução.
+    uri = daemon.register(Calculadora)   # Registra a classe Calculadora no daemon Pyro.
+    ns.register("dist.calculadora", uri) # Associa o nome "dist.calculadora" ao URI gerado anteriormente, tornando o objeto acessível por esse nome simbólico.
     print("Servidor pronto.")
-    daemon.requestLoop()   
+    daemon.requestLoop()                 # Inicia o loop de escuta do daemon.
 
 if __name__ == "__main__":
     main()

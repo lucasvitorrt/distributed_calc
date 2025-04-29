@@ -1,8 +1,7 @@
 import Pyro5.api
 
 def main():
-    #uri = input("Digite o URI do servidor (ex: PYRO:obj_xxxxx@localhost:port): ").strip()
-    #calculadora = Pyro5.api.Proxy(uri)
+    
     calculadora = Pyro5.api.Proxy("PYRONAME:dist.calculadora")
 
     while True:
