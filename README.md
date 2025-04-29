@@ -34,7 +34,7 @@ pip install Pyro5
 Antes de rodar o servidor e o cliente, **é necessário inicializar o servidor de nomes** do Pyro5. No terminal:
 
 ```cmd
-pyro5-ns
+pyro5-ns -n 0.0.0.0
 ```
 
 > ⚠️ Este comando deve ser executado em um terminal separado e **mantido em execução**.

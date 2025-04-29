@@ -3,6 +3,12 @@ import Pyro5.api
 def main():
     
     calculadora = Pyro5.api.Proxy("PYRONAME:dist.calculadora")
+    
+    #Como a rede deve permiti Bradcast UDP, caso queira utilizar em uma outra maquina o acesso a classe
+    #distribuída, substituir o "0.0.0.0" pelo ip do servidor.
+    #ns = Pyro5.api.locate_ns(host="0.0.0.0")
+    #uri = ns.lookup("dist.calculadora")
+    #calculadora = Pyro5.api.Proxy(uri)
 
     while True:
         print("\n--- CALCULADORA DISTRIBUÍDA ---")

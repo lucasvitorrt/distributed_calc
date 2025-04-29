@@ -26,6 +26,8 @@ class Calculadora:
         return base ** expoente
 
 def main():
+    # Substitua '0.0.0.0' pelo IP real da máquina do servidor, se quiser restringir
+    #daemon = Pyro5.server.Daemon(host="0.0.0.0")  # Escuta em todas as interfaces
     daemon = Pyro5.server.Daemon()       # Cria uma instância de daemon Pyro, que é responsável por escutar requisições remotas vindas de clientes e direcioná-las para os objetos Python corretos. Ele atua como um "servidor RPC" (Remote Procedure Call).
     ns = Pyro5.api.locate_ns()           # Conecta-se ao servidor de nomes do Pyro5 (pyro5-ns), que deve estar previamente em execução.
     uri = daemon.register(Calculadora)   # Registra a classe Calculadora no daemon Pyro.
